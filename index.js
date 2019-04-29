@@ -14,84 +14,12 @@ bot.login(process.env.TOKEN);
 client.login(process.env.TOKEN);
 db.defaults({ histoires: [], xp: []}).write();
 
-fs.readdir("./commandes/", (err, files) => {
-
-    if(err) console.log(err);
-    let jsfile = files.filter(f => f.split(".").pop() === "js");
-    if(jsfile.length <= 0){
-      console.log(`TEXTE  ERREUR`);
-      return;
-    }
-
-     jsfile.forEach((f, i) =>{
-      let ticketjs = require(`./commandes/ticket.js`);
-      console.log(`File ${f} is fully loaded!`);
-      client.commandes.set(ticketjs.ticket.name, ticketjs);
-    });
-  });
-
-client.on("message", message => {
-    let messageArray = message.content.split(" ");
-    let cmd = messageArray[0];
-    let args = messageArray.slice(1);
-
-    let commandfile = client.commandes.get(cmd.slice("1"));
-    if(commandfile) commandfile.run(client, message, args);
-  });
-
-function play(connection, message) {
-    var server = servers[message.guild.id];
-
-    server.dispatcher = connection.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
-
-    server.queue.shift();
-
-    server.dispatcher.on("end", function() {
-        if (server.queue[0]) play(connection, message);
-        else connection.disconnect();
-    });
-}
-
-var servers = {};
-
 bot.on("ready", function() {
     bot.user.setActivity(`-help | ${bot.guilds.size} serveurs | ${bot.users.size} utilisateurs`);
     console.log("AzerBot initié et prêt à servir ${client.guilds.size} serveurs dont ${client.users.size} utilisateurs !");
 
-fs.readdir("./commands/", (err, files) => {
-
-  if(err) console.log(err);
-  let jsfile = files.filter(f => f.split(".").pop() === "js");
-  if(jsfile.length <= 0){
-    console.log("Couldn't find commands.");
-    return;
-  }
-
-  jsfile.forEach((f, i) =>{
-    let props = require(`./commands/${f}`);
-    console.log(`${f} loaded!`);
-    client.commands.set(props.help.name, props);
-  });
-});
-
 client.on("message", (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
-
-  /*if (message.content.toLowerCase().startsWith(prefix + `ticket help`)) {
-    const embed = new Discord.RichEmbed()
-    .setTitle(`:mailbox_with_mail: Vulnix Help`)
-    .setColor(0xCF40FA)
-    .setDescription(`Hello! I'm Vulnix, the Discord bot for super cool support ticket stuff and more! Here are my commands:`)
-    .addField(`Tickets`, `[${prefix}new]() > Opens up a new ticket and tags the Support Team\n[${prefix}close]() > Closes a ticket that has been resolved or been opened by accident`)
-    .addField(`Other`, `[${prefix}help]() > Shows you this help menu your reading\n[${prefix}ping]() > Pings the bot to see how long it takes to react\n[${prefix}about]() > Tells you all about Vulnix`)
-    message.channel.send({ embed: embed });
-  }*/
-
-  /*if (message.content.toLowerCase().startsWith(prefix + `ping`)) {
-    message.channel.send(`Hoold on!`).then(m => {
-    m.edit(`:ping_pong: Wew, made it over the ~waves~ ! **Pong!**\nMessage edit time is ` + (m.createdTimestamp - message.createdTimestamp) + `ms, Discord API heartbeat is ` + Math.round(client.ping) + `ms.`);
-    });
-}*/
 
 if (message.content.toLowerCase().startsWith(prefix + `ticket open`)) {
     const reason = message.content.split(" ").slice(1).join(" ");
@@ -153,25 +81,6 @@ client.on("message", async message => {
     
     switch (args[0].toLowerCase()) {
 
-case "play":
-	var playembed = new Discord.RichEmbed()
-		.setDescription(`Cette commande est temporairement indisponible en raison d'erreurs.`)
-	message.channel.sendEmbed(playembed)
-break;
-case "ping":
-          const m = await message.channel.send("Ping?");
-          m.edit(`Pong! La latence est de ${m.createdTimestamp - message.createdTimestamp}ms. Le temps de latence de l'API discord est de ${Math.round(client.ping)}ms`);
-break;
-case "skip":
-	var skipembed = new Discord.RichEmbed()
-		.setDescription(`Cette commande est temporairement indisponible en raison d'erreurs.`)
-	message.channel.sendEmbed(skipembed)
-break;
-case "stop":
-	var stopembed = new Discord.RichEmbed()
-		.setDescription(`Cette commande est temporairement indisponible en raison d'erreurs.`)
-	message.channel.sendEmbed(stopembed)
-break;
 case "help":
 //Correctly Indented
 		var embede = new Discord.RichEmbed()
@@ -413,81 +322,6 @@ case "botinfo":
                    .setColor("0x81DAF5")
                message.channel.sendEmbed(embedbot)
 break;
-/*case "release":
-           let xoargs = message.content.split(" ").slice(1);
-           let xo03 = xoargs.join(" ")
-           var xo01 = bot.channels.findAll('name', 'azerbot');
-           var xo02 = message.guild.channels.find('name', 'azerbot');
-           if(message.member.hasPermission("ADMINISTRATOR") || message.member.id === '204895667784704'){
-		   if(!xo03) return message.reply("Merci d'écrire un message à envoyer à la globalité des discords.")
-
-                        var replysg = [
-                            '#F407FC', 
-                            '#034EEF',
-                            '#09F4D1',
-                            '#09F14E',
-                            '#E7EF07',
-                            '#F5A718',
-                            '#FB4B06',
-                            '#FB2702',
-                            '#F6F4F3',
-                            '#201F1F'
-                        ];
-                    
-                        let reponseg = (replysg[Math.floor(Math.random() * replysg.length)])
-             
-           var embedxo = new Discord.RichEmbed()
-           .setColor(reponseg)
-           .setTitle("Mise à jour !")
-           .setDescription(xo03)
-           .setFooter("AzerBot by Azrty")
-           .setTimestamp()
-       bot.channels.findAll('name', 'azerbot').map(channel => channel.send(embedxo))
-            }else{
-                message.reply(`Seul mon créateur peut effectuer cette action.`)}
-break;*/
-/*case "tempsondage":
-                let argson = message.content.split(" ").slice(1);
-                let thingToEchon = argson.join(" ")
-                if (!thingToEchon) return message.reply("Merci d'envoyer une question pour le sondage temporaire de 5 minutes")
-                if (!message.guild.channels.find("name", "sondage-temp")) return message.reply("Erreur: le channel `sondage-temp` est introuvable, il est nécéssaire de le créer pour effectuer cette commande.");
-                if (message.channel.name !== 'sondage-temp') { return message.reply("Cette commande ne se fait pas ici, elle se fait dans `sondage-temp`");
-                }else{
-                message.delete()
-                if (cooldown.has(message.author.id)) return message.author.send(`**[ Command __tempsondage__ via le discord __${message.guild.name}__ ]** Veuillez attendre 12 heures avant de re-éffectuer cette commande.`);
-            
-            
-                    cooldown.add(message.author.id);
-            
-                    setTimeout(() => {
-            
-                      cooldown.delete(message.author.id);
-            
-                    }, 43200000);
-                setTimeout(() => message.guild.channels.find("name", "sondage-temp").send(`Le sondage de ${message.author.username} vient d'expirer.`), 10000)
-                var embedeeeon = new Discord.RichEmbed()
-                    .setDescription("Sondage Temporaire")
-                    .addField(thingToEchon, "Répondre avec :white_check_mark: ou :x:")
-                    .addField("Fin du sondage dans", "Moin de 5 minutes")
-                    .setColor("0xFF00FF")
-                    .setFooter(`Requête de ${message.author.username}`)
-                    .setTimestamp()
-                message.channel.sendEmbed(embedeeeon)
-                .then(function (message) {
-                message.react("✅")
-                message.react("❌")
-                setTimeout(() => message.delete(), 300000)
-                if (talkedRecently.has(message.author)) {
-                    message.delete()
-                } else {
-                talkedRecently.add(message.author);
-                setTimeout(() => {
-                    talkedRecently.delete(message.author);
-                }, 43200000);
-                }
-                }).catch(function() {
-                });
-break;*/
 
   //let prefix = prefixes[message.guild.id].prefixes;
   let messageArray = message.content.split(" ");
