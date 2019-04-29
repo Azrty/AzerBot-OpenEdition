@@ -1,5 +1,5 @@
 {
-  "name": "AzerWorld",
+  "name": "AzerBot",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,16 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^11.3.0",
-    "lowdb": "^1.0.0",
-    "ffmpeg-binaries": "^3.2.2-3",
-    "opusscript": "0.0.6",
-    "ytdl-core": "^0.20.2",
-    "body-parser": "^1.15.2",
-    "ejs": "^2.5.1",
-    "express": "^4.14.0",
-    "express-ejs-layouts": "^2.2.0",
-    "nodemon": "^1.10.2",
-    "fs": "0.0.1-security"
+    "discord.js": "^11.3.0"
   }
 }
