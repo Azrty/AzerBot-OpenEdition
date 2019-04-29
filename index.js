@@ -2,20 +2,10 @@ const Discord = require('discord.js');
 var bot = new Discord.Client();
 var client = new Discord.Client();
 var prefix = ("-");
-const YTDL = require("ytdl-core");
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
-const adapter = new FileSync('database.json');
-const db = low(adapter);
-const talkedRecently = new Set();
-const cooldown = new Set();
-const fs = require("fs");
 bot.login('Placez le token du bot ici');
 client.login('Placez le token du bot ici');
-db.defaults({ histoires: [], xp: []}).write();
-
-bot.on("ready", function() {
-    bot.user.setActivity(`-help | ${bot.guilds.size} serveurs | ${bot.users.size} utilisateurs`);
+client.on("ready", function() {
+    client.user.setActivity(`-help | ${client.guilds.size} serveurs | ${client.users.size} utilisateurs`);
     console.log("AzerBot initié et prêt à servir ${client.guilds.size} serveurs dont ${client.users.size} utilisateurs !");
 
 client.on("message", (message) => {
@@ -73,7 +63,7 @@ if (message.content.toLowerCase().startsWith(prefix + `ticket close`)) {
 
 //bot.on("message", function(message) {
 client.on("message", async message => {
-    if (message.author.equals(bot.user)) return;
+    if (message.author.equals(client.user)) return;
 	
     if (!message.content.startsWith(prefix)) return;
     
@@ -283,13 +273,5 @@ case "event":
            }else{
               return message.reply("Tu n'as pas la permission.")}
 break;
-
-  //let prefix = prefixes[message.guild.id].prefixes;
-  let messageArray = message.content.split(" ");
-  let cmd = messageArray[0];
-  let args = messageArray.slice(1);
-
-  let commandfile = bot.commands.get(cmd.slice(prefix.length));
-  if(commandfile) commandfile.run(bot,message,args);
 };
 })})
