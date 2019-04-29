@@ -10,8 +10,8 @@ const db = low(adapter);
 const talkedRecently = new Set();
 const cooldown = new Set();
 const fs = require("fs");
-bot.login(process.env.TOKEN);
-client.login(process.env.TOKEN);
+bot.login('Placez le token du bot ici');
+client.login('Placez le token du bot ici');
 db.defaults({ histoires: [], xp: []}).write();
 
 bot.on("ready", function() {
