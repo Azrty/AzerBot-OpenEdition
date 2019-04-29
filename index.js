@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 var bot = new Discord.Client();
 var client = new Discord.Client();
 var prefix = ("-");
-bot.login('Placez le token du bot ici');
 client.login('Placez le token du bot ici');
 client.on("ready", function() {
     client.user.setActivity(`-help | ${client.guilds.size} serveurs | ${client.users.size} utilisateurs`);
