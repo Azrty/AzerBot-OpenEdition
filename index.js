@@ -86,13 +86,11 @@ case "help":
 		var embede = new Discord.RichEmbed()
 			.setDescription(`${message.author.username}, Voici la liste des commandes:`)
 			.addField(`Divertissement`, "`\n-8ball\n-sondage`")
-			.addField("Utilitaire", "`\n-profil\n-serverinfo\n-botinfo\n-id\n-ping\n-invite`")
+			.addField("Utilitaire", "`\n-profil\n-serverinfo\n-id\n-ping`")
 			.addField(`Modération`, "`\n-ban\n-kick\n-clear`", true)
 			.addField(`Administration`, "`\n-sondage\n-say\n-annonce`")
 			.addField(`Commandes désactivés`, "`\n-play\n-skip\n-stop`", true)
-			.addField(`Prochainement`, "`\n-ticket help`")
-			.addField(`Support`, "[[Clique ici pour accéder au support du Bot]](https://discord.gg/Jrbw2Zh)")
-			.setFooter("AzerBot - By [Azrty](https://azrty.com)")
+			.setFooter("AzerBot - By [Azrty](https://azrty.com)") //Vous pouvez modifier
 			.setTimestamp()
 			.setColor("0xDF7401")
 		message.author.sendEmbed(embede)
@@ -202,37 +200,11 @@ case "8ball":
                .setColor("0x40FF00")
            message.channel.sendEmbed(ballembed)
 break;
-case "eval":
-	if(message.member.id !== '335521075230277635'){
-		return message.channel.send("Vous devez être **propriétaire du bot** pour effectuer cette commande !");
-	}
-	let command = message.content.slice(prefix.length);
-	let split = command.split(" ");
-	command = split[0];
-	split.shift();
-	let code = split.join(" ");
-	try {
-		let ev = require('util').inspect(eval(code));
-		if (ev.length > 1950) {
-			ev = ev.substr(0, 1950);
-	}
-	let token = process.env.TOKEN.replace(/\./g, "\.")
-	let re = new RegExp(token, 'g') 
-	ev = ev.replace(re, "*R-eD-Ac-Te-D-*");
-	message.channel.sendMessage("**Input:**```js\n"+code+"```**Eval:**```js\n"+ev+"```")
-        } catch(err) {
-		message.channel.sendMessage('```js\n'+err+"```")
-	}
 break;
 case "id":
                var idembed = new Discord.RichEmbed()
                    .setDescription(`Votre IDENTIFIANT/ID est ${message.author.id}`)
                message.channel.sendEmbed(idembed)
-break;
-case "invite":
-               var inlembed = new Discord.RichEmbed()
-                   .setDescription(`Il est désormais possible de m'inviter en [cliquant ici](https://discordapp.com/api/oauth2/authorize?client_id=434362960232579084&permissions=1610083399&scope=bot) (Lien: https://discordapp.com/api/oauth2/authorize?client_id=434362960232579084&permissions=1610083399&scope=bot)`)
-               message.channel.sendEmbed(inlembed)
 break;
 case "clear":
         const prefixe = "-";
@@ -310,17 +282,6 @@ case "event":
            message.guild.channels.find("name", "event").sendEmbed(embedeee)
            }else{
               return message.reply("Tu n'as pas la permission.")}
-break;
-case "botinfo":
-               var embedbot = new Discord.RichEmbed()
-                   .setDescription("Information")
-                   .addField("Nombre de discord sur lequel je suis", `${bot.guilds.size} serveur(s)`)
-                   .addField(`Nombre d'utilisateur(s) au total sur les ${bot.guilds.size} serveur(s) ou je suis`, `${bot.users.size} utilisateur(s)`)
-                   .addField("Crée par", "[Azrty](http://azrty.com)")
-                   .addField("Crée le", "04/04/2018")
-                   .addField("Version", "1.0.0")
-                   .setColor("0x81DAF5")
-               message.channel.sendEmbed(embedbot)
 break;
 
   //let prefix = prefixes[message.guild.id].prefixes;
